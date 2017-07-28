@@ -1,16 +1,19 @@
 # attempting to decipher... err
 import re
 
+# application information
+__author__ = "Jordan Schurmann, Luke Reynolds"
+__email__ = "jordan.schurmann@gmail.com, lreynolds188@gmail.com"
+__version__ = "1.0.1"
+__website__ = "http://lukereynolds.net/"
 
 def same(item, target):
     return len([c for (c, t) in zip(item, target) if c == t])
-
 
 def build(pattern, words, seen, list):
     return [word for word in words
             if re.search(pattern, word) and word not in seen.keys() and
             word not in list]
-
 
 def find(word, words, seen, target, path):
     list = []
