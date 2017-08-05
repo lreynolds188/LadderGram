@@ -4,9 +4,8 @@ import re
 # application information
 __author__ = "Jordan Schurmann, Luke Reynolds"
 __email__ = "jordan.schurmann@gmail.com, lreynolds188@gmail.com"
-__version__ = "1.0.2"
+__version__ = "1.0.5"
 __website__ = "http://lukereynolds.net/"
-short = False;
 
 
 # return the number of letters that match
@@ -92,27 +91,48 @@ def valid_target(start, target, words):
         return 4
 
 
+# validate input for shortest path
+def valid_path(shortest):
+    yes_or_no = ['y', 'n']
+    if len(shortest) == 1:
+        if shortest.isalpha():
+            if shortest in yes_or_no:
+                if shortest == 'y':
+                    return 'y'
+                else:
+                    return 'n'
+            else:
+                return 1
+        else:
+            return 2
+    elif len(shortest) > 1:
+        return 3
+    else:
+        return 4
+
+
 # get file name
 while True:
     fname = input("Enter dictionary name: ").lower()
-    ferror = valid_file(fname)
-    if ferror == 0:
+    file_error = valid_file(fname)
+    if file_error == 0:
         break
-    elif ferror == 1:
+    elif file_error == 1:
         print("Selected file is empty....please reenter")
     else:
         print("Can not find the file....please reenter")
 
 # open corresponding dictionary
-lines = (open(fname, 'r').read()).split()  # get start word
+lines = (open(fname, 'r').read()).split()
+# get start word
 while True:
     start = (input("Enter start word: ").lower()).strip()
-    serror = valid_start(start, lines)
-    if serror == 0:
+    start_error = valid_start(start, lines)
+    if start_error == 0:
         break
-    elif serror == 1:
+    elif start_error == 1:
         print("Start word not in list of words....please reenter")
-    elif serror == 2:
+    elif start_error == 2:
         print("Start word must contain more than one letter....please reenter")
     else:
         print("Start word must contain only letters....please reenter")
@@ -127,25 +147,36 @@ for line in lines:
 # get target word
 while True:
     target = (input("Enter target word: ").lower()).strip()
-    terror = valid_target(start, target, words)
-    if terror == 0:
+    target_error = valid_target(start, target, words)
+    if target_error == 0:
         break
-    elif terror == 1:
+    elif target_error == 1:
         print("Target word not in list of words....please reenter")
-    elif terror == 2:
+    elif target_error == 2:
         print("Target word must be different from Start word....please reenter")
-    elif terror == 3:
+    elif target_error == 3:
         print("Target word must be same length as Start word....please reenter")
     else:
         print("Target word must contain only letters....please reenter")
 
+# Shortest or longest path
 while True:
-    temp = input("Would you like the short route? y/n: ").lower();
-    if temp == 'y':
-        short = True;
-        break;
-    elif temp == 'n':
-        break;
+    shortest = (input("Would you like the short route? y/n: ").lower()).strip()
+    path_error = valid_path(shortest)
+    if path_error == 'y':
+        short = True
+        break
+    elif path_error == 'n':
+        break
+    elif path_error == 1:
+        print("Please enter Y or N only")
+    elif path_error == 2:
+        print("Please enter letters Y or N only")
+    elif path_error == 3:
+        print("Please enter only one character")
+    else:
+        print("Please enter a character")
+
 
 count = 0
 path = [start]
