@@ -9,29 +9,40 @@ __version__ = "1.0.2"
 __website__ = "http://lukereynolds.net/"
 
 
+# return the number of letters that match
 def same(item, target):
     return len([c for (c, t) in zip(item, target) if c == t])
 
 
+# build a list of word that match the pattern sent to the function
 def build(pattern, words, seen, list):
     return [word for word in words
-                 if re.search(pattern, word) and word not in seen.keys() and
-                    word not in list]
+                 if re.search(pattern, word) and word not in seen.keys() and word not in list]
 
 
 def find(start, words, seen, target, path):
     list = []
+    # for each letter in the starting word
     for i in range(len(start)):
+        # add the return value of the build function to the list when sent the pattern of the word (e.g. lead: ".ead", "l.ad", "le.d", "lea.")
         list += build(start[:i] + "." + start[i + 1:], words, seen, list)
+    # if the list is empty
     if len(list) == 0:
         return False
-    list = sorted([(same(w, target), w) for w in list])
+    # sort the list into pairs showing the current words closeness to the target word followed by the current word (e.g. the word 'load' and 'gold' have 2 of the same letters so it will be represented by (2, 'load'))
+    list = sorted([(same(w, target), w) for w in list], reverse=True)
+    # for each pair in the list
     for (match, item) in list:
+        # if the current word has at least 2 matching letters
         if match >= len(target) - 1:
+            # if the current word amount of matching letter is equal to the length of the target word minus 1
             if match == len(target) - 1:
+                # append the corresponding word to the path
                 path.append(item)
             return True
+        # mark that the word has been looked at
         seen[item] = True
+    # not really sure
     for (match, item) in list:
         path.append(item)
         if find(item, words, seen, target, path):
