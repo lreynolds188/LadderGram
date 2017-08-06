@@ -4,7 +4,7 @@ import re
 # application information
 __author__ = "Jordan Schurmann, Luke Reynolds"
 __email__ = "jordan.schurmann@gmail.com, lreynolds188@gmail.com"
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 __website__ = "http://lukereynolds.net/"
 
 
@@ -179,7 +179,8 @@ words = []
 for line in lines:
     word = line.rstrip()
     if len(word) == len(start):
-        if word not in notwords:
+        # If the start word is in the excluded list, do not exclude it
+        if (word == start) or (word not in notwords):
             words.append(word)
 
 # Get target word
