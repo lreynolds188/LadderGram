@@ -4,7 +4,7 @@ import re
 # application information
 __author__ = "Jordan Schurmann, Luke Reynolds"
 __email__ = "jordan.schurmann@gmail.com, lreynolds188@gmail.com"
-__version__ = "1.0.11"
+__version__ = "1.0.12"
 __website__ = "http://lukereynolds.net/"
 
 
@@ -61,70 +61,77 @@ def find(start, words, seen, target, path):
     :rtype: Boolean
 
     """
-    setword = []
+    letterfound = []
     list = []
-
     """
-    If any letters of the start and target match
+    Determine what start and target letters match.  If greater than 0 then update counter
     """
     if same(start, target) > 0:
         for i in range(len(start)):
             """
-            Check if new start value is within 1 character of target
+            Append to the letter found list the position of the matching letters - starting from 0
             """
             if path[-1][i] == target[i]:
-                setword.append(i)
+                letterfound.append(i)
     """
-    For each word
+    For each letter position
     """
     for i in range(len(start)):
         """
-        If not a word containing target letters
+        Only process letter positions that have not already been found
         """
-        if i not in setword:
+        if i not in letterfound:
             """
             Add the return value of the build function to the list when sent the pattern of the word
+            Only process patterns where the letter has not been found and not all of them.
             (e.g. lead: ".ead", "l.ad", "le.d", "lea.")
             """
             list += build(start[:i] + "." + start[i + 1:], words, seen, list)
     """
-    If the list is empty
+    If the list is empty (no forward path found) - Exit the iteration and process the next item if exists
     """
     if len(list) == 0:
         return False
     """
-    Sort the list into pairs showing the current words closeness to the target word followed by the current
-    word (e.g. the word 'load' and 'gold' have 2 of the same letters so it will be represented by (2, 'load'))
+    Sort the list by number of matches and alphabetically.  If reverse is specified sort by
+    highest number of matching letters first and then alphabetically.
     """
     list = sorted([(same(w, target), w) for w in list], reverse=short)
     """
-    For each pair in the list
+    For each matched pair in the sorted list
     """
     for (match, item) in list:
         """
-        If the current word matches or 1 letter off
+        If the current word matches target or 1 letter off target
         """
         if match >= len(target) - 1:
             """
-            If the current word amount of matching letter is equal to the length of the target word minus 1
+            If the current word amount of matching letter is equal to the length of the target
+            word minus 1
             """
             if match == len(target) - 1:
                 """
-                Append the corresponding word to the path
+                Append the corresponding word to the path and exist as we have found the last word
                 """
                 path.append(item)
             return True
         """
-        Mark that the word has been looked at, so that it is excluded in future reviews
+        For each word in the current list add it too see so that future searches exclude the word
         """
         seen[item] = True
     """
-    Set the word to reiterate down the loop.  Start becomes new item
+    Set the first word in the list to be the new start word to iterate on
     """
     for (match, item) in list:
+        """
+        Append the word to the list and start recursively search
+        """
         path.append(item)
         if find(item, words, seen, target, path):
             return True
+        """
+        Remove no path found and get the next item.
+        """
         path.pop()
 
 
