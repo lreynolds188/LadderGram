@@ -4,7 +4,7 @@ import re
 # application information
 __author__ = "Jordan Schurmann, Luke Reynolds"
 __email__ = "jordan.schurmann@gmail.com, lreynolds188@gmail.com"
-__version__ = "1.0.10"
+__version__ = "1.0.11"
 __website__ = "http://lukereynolds.net/"
 
 
@@ -25,7 +25,7 @@ def same(item, target):
 
 def build(pattern, words, seen, list):
     """
-    # Function builds a list of word that match the pattern sent to the function
+    Function builds a list of word that match the pattern sent to the function
 
     :param pattern: Pattern changes on each evocation - e.g. lead: ".ead", "l.ad", "le.d", "lea.")
     :type pattern: str
@@ -45,7 +45,7 @@ def build(pattern, words, seen, list):
 
 def find(start, words, seen, target, path):
     """
-    # Function recursively iterates over the each word, gradually moving closer to the target.
+    Function recursively iterates over the each word, gradually moving closer to the target.
 
     :param start: Current starting word - changes as this is recursively called
     :type start: str
