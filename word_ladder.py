@@ -69,7 +69,7 @@ def find(start, words, seen, target, path):
 
     # Determine whether start and target letters match. If greater than 0 then identify matching letters so that
     # these letters are excluded from the new pattern. All new words are to have these letters at a minimum.
-    if same(start, target) > 0:
+    if (sum(1 for (c, t) in zip(start, target) if c == t)) > 0:
         for i in range(len(start)):
             # Compare the new start word to the target word and return a list containing indexes
             # of matched letters.  E.g. [0,6] indicates letter matches at the first and seventh letters.
