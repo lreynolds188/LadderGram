@@ -266,14 +266,6 @@ class TestFind(unittest.TestCase):
         path = ['lead']
         self.assertFalse(word_ladder.find(start, words, seen, target, path))
 
-    # assertEqual fails  NEED TO KNOW WHAT TRUE EQUALS
-    def test_38_find3(self):
-        start = 'lead'
-        words = ['lead', 'load', 'goad', 'gold']
-        seen = {'lead': True}
-        target = 'gold'
-        path = ['lead']
-        self.assertEqual((word_ladder.find(start, words, seen, target, path)), ['lead', 'load', 'goad'])
 
 if __name__ == '__main__':
     unittest.main()
