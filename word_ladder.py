@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import os
 import re
 
@@ -118,6 +120,27 @@ def valid_file(fname):
         return "Can not find the file....please reenter"
 
 
+def make_word_list(start, lines, excluded):
+    """
+    Function to build a word file catering for any excluded word.
+
+    :param start: Start word input
+    :type start: str
+    :param lines: List of dictionary words
+    :type lines: list
+    :param excluded: List of excluded dictionary words
+    :type lines: list
+    :return: Final list of words
+    :rtype: list
+    """
+    words = []
+    for line in lines:
+        word = line.rstrip()
+        if len(word) == len(start):
+            if (word == start) or (word not in excluded):
+                words.append(word)
+    return words
+
 def valid_start(start, lines):
     """
     Function to validate input for start word.
@@ -166,7 +189,7 @@ def valid_target(start, target, words):
         else:
             return "Target word must be same length as Start word....please reenter"
     else:
-        return "Target word must only contain letters....please renter"
+        return "Target word must contain only letters....please reenter"
 
 
 def valid_yn(flag):
@@ -222,6 +245,7 @@ while True:
                 print(file_error)
         break
     elif yn_error == "n":
+        excluded = []
         break
     else:
         print(yn_error)
@@ -236,12 +260,7 @@ while True:
         print(start_error)
 
 # Create an array and fill it with words from the list with the same length as the starting word
-words = []
-for line in lines:
-    word = line.rstrip()
-    if len(word) == len(start):
-        if (word == start) or (word not in excluded):  # If the start word is in the excluded list, do not exclude it
-            words.append(word)
+words = make_word_list(start,lines, excluded)
 
 # Get input target word
 while True:
