@@ -129,7 +129,7 @@ def make_word_list(start, lines, excluded):
     :param lines: List of dictionary words
     :type lines: list
     :param excluded: List of excluded dictionary words
-    :type lines: list
+    :type excluded: list
     :return: Final list of words
     :rtype: list
     """
